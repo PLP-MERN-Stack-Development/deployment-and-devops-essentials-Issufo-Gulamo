@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment e DevOps - MERN Stack</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background: #f4f4f4; }
+    h1, h2, h3 { color: #333; }
+    code { background: #eee; padding: 2px 5px; border-radius: 3px; }
+    pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    .section { background: #fff; padding: 15px; margin-bottom: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+    a { color: #1a73e8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <h1>Deployment e DevOps - MERN Stack</h1>
+  <p><strong>Autor:</strong> Issufo Gulamo</p>
+
+  <div class="section">
+    <h2>Resumo da Tarefa</h2>
+    <p>Esta tarefa envolve:</p>
+    <ul>
+      <li>Preparar a aplicação MERN para produção</li>
+      <li>Implantar o backend em uma plataforma na nuvem (Render, Railway ou Heroku)</li>
+      <li>Implantar o frontend em um serviço de hospedagem estática (Vercel, Netlify ou GitHub Pages)</li>
+      <li>Configurar pipelines de CI/CD com GitHub Actions</li>
+      <li>Implementar monitoramento e estratégias de manutenção</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Arquivos e Configurações</h2>
+    <ul>
+      <li><code>Week7-Assignment.md</code> - instruções detalhadas</li>
+      <li><code>.github/workflows/</code> - templates de GitHub Actions</li>
+      <li><code>deployment/</code> - scripts de deploy</li>
+      <li><code>.env.example</code> - variáveis de ambiente</li>
+      <li><code>monitoring/</code> - exemplos de monitoramento</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Pipelines CI/CD</h2>
+    <p>Exemplo de "workflow de integração contínua para backend" (`.github/workflows/backend-ci.yml`):</p>
+    <pre>
+name: Backend CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm test
+    </pre>
+
+    <p>Exemplo de "workflow de deploy do frontend React" (`.github/workflows/frontend-cd.yml`):</p>
+    <pre>
+name: Frontend CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm run build
+      - run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>Exemplos de Comandos de Deploy</h2>
+    <h3>Backend no Render</h3>
+    <pre>
+# 1. Conectar o repositório no painel Render
+# 2. Definir variáveis de ambiente no painel:
+#    MONGO_URI=your_mongodb_uri
+#    NODE_ENV=production
+# 3. Render fará deploy automático a cada push no main
+    </pre>
+
+    <h3>Frontend no Vercel</h3>
+    <pre>
+# 1. Conectar repositório React no Vercel
+# 2. Configurar build: npm run build
+# 3. Deploy automático usando:
+npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>Variáveis de Ambiente Importantes</h2>
+    <pre>
+MONGO_URI=seu_mongodb_atlas_uri
+PORT=3000
+NODE_ENV=production
+VERCEL_TOKEN=token_do_vercel
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>Plataformas de Deploy</h2>
+    <h3>Backend</h3>
+    <ul>
+      <li>Render</li>
+      <li>Railway</li>
+      <li>Heroku</li>
+    </ul>
+    <h3>Frontend</h3>
+    <ul>
+      <li>Vercel</li>
+      <li>Netlify</li>
+      <li>GitHub Pages</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Monitoramento de Erros</h2>
+    <p>Usar ferramentas como <strong>Sentry</strong>:</p>
+    <pre>
+npm install @sentry/node @sentry/react
+
+// Exemplo Node.js
+const Sentry = require("@sentry/node");
+Sentry.init({ dsn: process.env.SENTRY_DSN });
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>Links Úteis</h2>
+    <ul>
+      <li><a href="https://docs.github.com/en/actions">GitHub Actions Documentation</a></li>
+      <li><a href="https://docs.atlas.mongodb.com/">MongoDB Atlas Documentation</a></li>
+      <li><a href="https://render.com/docs">Render Documentation</a></li>
+      <li><a href="https://docs.railway.app/">Railway Documentation</a></li>
+      <li><a href="https://vercel.com/docs">Vercel Documentation</a></li>
+      <li><a href="https://sentry.io/welcome/">Sentry Documentation</a></li>
+    </ul>
+  </div>
+
+</body>
+</html>
